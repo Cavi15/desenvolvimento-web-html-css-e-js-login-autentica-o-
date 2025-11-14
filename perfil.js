@@ -1,57 +1,51 @@
 
-function verificarLoginExistente() {
+function carregarPerfil() {
     
     const usuarioLogado = localStorage.getItem('usuarioLogado');
 
-    if (usuarioLogado) {
-        
-        window.location.href = 'perfil.html';
+    if (!usuarioLogado) {
+       
+        window.location.href = 'index.html';
+        return;
+    }
+
+    
+    const nomeUsuarioElement = document.getElementById('nome-usuario');
+    const mensagemBemVindo = document.getElementById('mensagem-bem-vindo');
+
+    if (nomeUsuarioElement) {
+       
+        nomeUsuarioElement.textContent = usuarioLogado;
+    }
+    
+    if (mensagemBemVindo) {
+        mensagemBemVindo.innerHTML = `Olá, <strong>${usuarioLogado}</strong>! Bem-vindo(a) ao seu perfil.`;
+        mensagemBemVindo.style.fontSize = '1.4em'; // Exemplo de CSS Dinâmico
+        mensagemBemVindo.style.color = '#333';
     }
 }
 
 
-function fazerLogin(event) {
-  
-    event.preventDefault(); 
+function fazerLogout() {
+    
+    localStorage.removeItem('usuarioLogado');
 
-    
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
-    const mensagemErro = document.getElementById('mensagem-erro');
-    
-    const username = usernameInput.value.trim();
-    const password = passwordInput.value.trim();
-
-    
-    const USUARIO_SIMULADO = 'user_demo'; 
-    const SENHA_SIMULADA = '12345';
-
-    
-    mensagemErro.textContent = '';
-    
    
-    if (username === USUARIO_SIMULADO && password === SENHA_SIMULADA) {
-        
-        localStorage.setItem('usuarioLogado', username);
-
-        
-        window.location.href = 'perfil.html';
-    } else {
-        
-        mensagemErro.textContent = 'Nome de usuário ou senha inválidos.';
-        mensagemErro.style.color = 'red'; 
-        mensagemErro.style.fontWeight = 'bold'; 
-    }
+    window.location.href = 'index.html';
 }
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    
-    verificarLoginExistente(); 
+    carregarPerfil();
 
-    
-    const loginForm = document.getElementById('login-form');
-    if (loginForm) {
-        loginForm.addEventListener('submit', fazerLogin);
+   
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', fazerLogout);
+        
+        
+        logoutButton.style.backgroundColor = 'darkred'; 
+        logoutButton.style.color = 'white';
+        logoutButton.style.borderRadius = '5px';
     }
 });
